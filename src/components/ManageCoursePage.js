@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CourseForm from "./CourseForm";
 //import { saveCourse } from "../api/courseApi";
 import * as courseApi from "../api/courseApi";
@@ -13,6 +13,14 @@ const ManageCoursePage = (props) => {
     authorId: null,
     category: "",
   });
+
+  useEffect(() => {
+    //from the path /course/:slug
+    const slug = props.match.params.slug;
+    if (slug) {
+      courseApi.getCourseBySlug(slug).then((_course) => setCourse(_course));
+    }
+  }, [props.match.params.slug]);
 
   function handleChange({ target }) {
     //create a copy of th ecourse obj (using spread operator) to avoide multating state
