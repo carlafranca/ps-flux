@@ -24,6 +24,7 @@ function CourseForm(props) {
             value={props.course.authorId || ""}
             onChange={props.onChange}
           >
+            <option value="" />
             <option value="1">Cory House</option>
             <option value="2">Scott Allen</option>
           </select>
