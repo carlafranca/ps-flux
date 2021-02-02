@@ -6,6 +6,7 @@ import * as courseActions from "../actions/courseActions";
 
 const ManageCoursePage = (props) => {
   const [errors, setErros] = useState({});
+  const [courses, setCourses] = useState(courseStore.getCourses());
   const [course, setCourse] = useState({
     id: null,
     slug: "",
@@ -15,12 +16,23 @@ const ManageCoursePage = (props) => {
   });
 
   useEffect(() => {
+    courseStore.addChangeListener(onChange);
     //from the path /course/:slug
     const slug = props.match.params.slug;
-    if (slug) {
-      setCourse(courseStore.getCourseBySlug(slug));
+    if (courses.length === 0) {
+      //check if courses exists
+      courseActions.loadCourses(); //if not load all courses
+      //if slug exists
+    } else if (slug) {
+      setCourse(courseStore.getCourseBySlug(slug)); //get course by slug
     }
-  }, [props.match.params.slug]);
+    //clean listner on componentWillUnmount
+    return () => courseStore.removeChangeListener(onChange);
+  }, [courses.length, props.match.params.slug]); //dependencies to update
+
+  function onChange() {
+    setCourses(courseStore.getCourses());
+  }
 
   function handleChange({ target }) {
     //create a copy of th ecourse obj (using spread operator) to avoide multating state

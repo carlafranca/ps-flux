@@ -3,6 +3,7 @@ import Dispatcher from "../appDispatcher";
 import actionTypes from "../actions/actionTypes";
 
 const CHANGE_EVENT = "change";
+//course store initializing to an empty array
 let _courses = [];
 
 //Store listeners
@@ -35,6 +36,17 @@ Dispatcher.register((action) => {
       _courses.push(action.course); //course comes from courseActions.js payload
       store.emitChange();
       break;
+    case actionTypes.UPDATE_COURSE:
+      _courses = _courses.map((course) =>
+        course.id === action.course.id ? action.course : course
+      );
+      store.emitChange();
+      break;
+    case actionTypes.LOAD_COURSES:
+      _courses = action.courses;
+      store.emitChange();
+      break;
+
     default:
     //nothing to do here
   }
