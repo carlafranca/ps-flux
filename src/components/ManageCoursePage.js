@@ -4,6 +4,9 @@ import CourseForm from "./CourseForm";
 import courseStore from "../stores/courseStore";
 import * as courseActions from "../actions/courseActions";
 
+import authorStore from "../stores/authorStore";
+import * as authorActions from "../actions/authorActions";
+
 const ManageCoursePage = (props) => {
   const [errors, setErros] = useState({});
   const [courses, setCourses] = useState(courseStore.getCourses());
@@ -15,6 +18,8 @@ const ManageCoursePage = (props) => {
     category: "",
   });
 
+  const [authors, setAuthors] = useState(authorStore.getAuthors);
+
   useEffect(() => {
     courseStore.addChangeListener(onChange);
     //from the path /course/:slug
@@ -22,6 +27,7 @@ const ManageCoursePage = (props) => {
     if (courses.length === 0) {
       //check if courses exists
       courseActions.loadCourses(); //if not load all courses
+      authorActions.loadAuthors();
 
       //if slug exists
     } else if (slug) {
@@ -34,6 +40,7 @@ const ManageCoursePage = (props) => {
 
   function onChange() {
     setCourses(courseStore.getCourses());
+    setAuthors(authorStore.getAuthors());
   }
 
   function handleChange({ target }) {
@@ -72,6 +79,7 @@ const ManageCoursePage = (props) => {
       <CourseForm
         errors={errors}
         course={course}
+        authors={authors}
         onChange={handleChange}
         onSubmit={handleSubmit}
       />

@@ -25,8 +25,11 @@ function CourseForm(props) {
             onChange={props.onChange}
           >
             <option value="" />
-            <option value="1">Cory House</option>
-            <option value="2">Scott Allen</option>
+            {props.authors.map((author) => (
+              <option key={author.id} value={author.id}>
+                {author.name}
+              </option>
+            ))}
           </select>
         </div>
         {props.errors.authorId && (
@@ -51,6 +54,7 @@ function CourseForm(props) {
 //Document component's expectations
 CourseForm.protoTypes = {
   course: PropTypes.object.isRequired,
+  authors: PropTypes.array.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
