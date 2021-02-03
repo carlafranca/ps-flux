@@ -35,11 +35,11 @@ Dispatcher.register((action) => {
     case actionTypes.DELETE_COURSE:
       _courses = _courses.filter(
         (course) => course.id !== parseInt(action.id, 10)
-      ); //course comes from courseActions.js payload
+      );
       store.emitChange();
       break;
     case actionTypes.CREATE_COURSE:
-      _courses.push(action.course); //course comes from courseActions.js payload
+      _courses = [..._courses, action.course];
       store.emitChange();
       break;
     case actionTypes.UPDATE_COURSE:

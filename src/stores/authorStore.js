@@ -39,7 +39,7 @@ Dispatcher.register((action) => {
       authorStore.emitChange();
       break;
     case actionTypes.CREATE_AUTHOR:
-      _authors.push(action.author);
+      _authors = [..._authors, action.author];
       authorStore.emitChange();
       break;
     case actionTypes.UPDATE_AUTHOR:

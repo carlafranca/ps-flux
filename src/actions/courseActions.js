@@ -19,13 +19,6 @@ export function saveCourse(course) {
         course: savedCourse,
       });
     });
-
-    // dispatcher.dispatch({
-    //   actionType: course.id
-    //     ? actionTypes.UPDATE_COURSE
-    //     : actionTypes.CREATE_COURSE,
-    //   course: savedCourse,
-    // });
   });
 }
 
@@ -40,7 +33,6 @@ export function loadCourses() {
             (author) => author.id === course.authorId
           ).name)
       );
-
       dispatcher.dispatch({
         actionType: actionTypes.LOAD_COURSES,
         courses: courses,

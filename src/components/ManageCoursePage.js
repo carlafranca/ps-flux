@@ -5,10 +5,11 @@ import courseStore from "../stores/courseStore";
 import * as courseActions from "../actions/courseActions";
 
 import authorStore from "../stores/authorStore";
-import * as authorActions from "../actions/authorActions";
+import { loadAuthors } from "../actions/authorActions";
 
 const ManageCoursePage = (props) => {
   const [errors, setErros] = useState({});
+  const [authors, setAuthors] = useState(authorStore.getAuthors());
   const [courses, setCourses] = useState(courseStore.getCourses());
   const [course, setCourse] = useState({
     id: null,
@@ -18,25 +19,30 @@ const ManageCoursePage = (props) => {
     category: "",
   });
 
-  const [authors, setAuthors] = useState(authorStore.getAuthors);
-
   useEffect(() => {
     courseStore.addChangeListener(onChange);
+    authorStore.addChangeListener(onChange);
     //from the path /course/:slug
     const slug = props.match.params.slug;
-    if (courses.length === 0) {
-      //check if courses exists
-      courseActions.loadCourses(); //if not load all courses
-      authorActions.loadAuthors();
 
-      //if slug exists
+    if (authors.length === 0) loadAuthors();
+
+    if (courses.length === 0) {
+      courseActions.loadCourses();
     } else if (slug) {
       const courseBySlug = courseStore.getCourseBySlug(slug);
-      courseBySlug ? setCourse(courseBySlug) : props.history.push("/404");
+      if (courseBySlug) {
+        setCourse(courseBySlug);
+      } else {
+        props.history.push("/404");
+      }
     }
     //clean listner on componentWillUnmount
-    return () => courseStore.removeChangeListener(onChange);
-  }, [courses.length, props.match.params.slug, props.history]); //dependencies to update
+    return () => {
+      courseStore.removeChangeListener(onChange);
+      authorStore.removeChangeListener(onChange);
+    };
+  }, [courses.length, authors.length, props.match.params.slug, props.history]); //dependencies to update
 
   function onChange() {
     setCourses(courseStore.getCourses());
