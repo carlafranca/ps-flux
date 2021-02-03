@@ -22,13 +22,15 @@ const ManageCoursePage = (props) => {
     if (courses.length === 0) {
       //check if courses exists
       courseActions.loadCourses(); //if not load all courses
+
       //if slug exists
     } else if (slug) {
-      setCourse(courseStore.getCourseBySlug(slug)); //get course by slug
+      const courseBySlug = courseStore.getCourseBySlug(slug);
+      courseBySlug ? setCourse(courseBySlug) : props.history.push("/404");
     }
     //clean listner on componentWillUnmount
     return () => courseStore.removeChangeListener(onChange);
-  }, [courses.length, props.match.params.slug]); //dependencies to update
+  }, [courses.length, props.match.params.slug, props.history]); //dependencies to update
 
   function onChange() {
     setCourses(courseStore.getCourses());
