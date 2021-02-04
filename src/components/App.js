@@ -9,6 +9,8 @@ import CoursesPage from "./CoursesPage";
 import NotFoundPage from "./NotFoundPage";
 import ManageCoursePage from "./ManageCoursePage";
 
+import AuthorsPage from "./AuthorsPage";
+
 function App() {
   return (
     <div className="container-fluid">
@@ -21,6 +23,7 @@ function App() {
         <Route path="/course/:slug" component={ManageCoursePage} />
         <Route path="/course" component={ManageCoursePage} />
         <Redirect from="/about-page" to="about" />
+        <Route path="/authors" component={AuthorsPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>
